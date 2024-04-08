@@ -11,10 +11,18 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { setCookie } from "cookies-next";
+import GoogleLogin from "./Google/GoogleLogin";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
   isLogin: boolean;
 }
+
+type LoginCredentials = {
+  loginProvider: "WEB" | "GOOGLE";
+} & (
+  | { loginProvider: "WEB"; email: string; password: string } // No "code" property for web login
+  | { loginProvider: "GOOGLE"; code: string }
+); // "code" required for Google login
 
 const UserAuthForm = ({ className, isLogin, ...props }: UserAuthFormProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -23,32 +31,34 @@ const UserAuthForm = ({ className, isLogin, ...props }: UserAuthFormProps) => {
 
   const router = useRouter();
 
-  async function onSubmit(event: React.SyntheticEvent) {
-    event.preventDefault();
-    setIsLoading(true);
+  const onSubmit = async (payload: LoginCredentials) => {
+    const loginUrl = isLogin
+      ? "/api/v1/auth/authenticate"
+      : "/api/v1/auth/register";
+
     try {
-      const result = await axios.post(
-        BASE_API_URL + "/api/v1/auth/authenticate",
-        {
-          email: email,
-          password: password,
-          loginProvider: "WEB",
-        }
-      );
+      setIsLoading(true);
+      const result = await axios.post(BASE_API_URL + loginUrl, payload);
       if (result.status === 200) {
         console.log(result.data);
         const token = result.data.token;
         setCookie("token", token);
-        toast.success("Login successful");
+        toast.success(isLogin ? "Login successful" : "Signup successful");
         router.push("/dashboard");
       } else {
         toast.error("Invalid email or password");
       }
     } catch (error) {
-      console.log("error1:", error);
+      console.error("error:", error);
       if (isAxiosError(error)) {
-        if (error.response?.status === 401) {
-          toast.error("Invalid email or password");
+        const errorStatus = error.response?.status;
+        let errorMessage = error.response?.data?.message;
+        if (errorStatus === 400 || errorStatus === 401) {
+          if (errorMessage === "Bad credentials") {
+            errorMessage = "Invalid email or password";
+          }
+          toast.error(errorMessage);
+          // toast.error("Invalid email or password");
         } else {
           toast.error("Something went wrong");
         }
@@ -56,11 +66,62 @@ const UserAuthForm = ({ className, isLogin, ...props }: UserAuthFormProps) => {
     } finally {
       setIsLoading(false);
     }
-  }
+  };
+
+  const onSubmitSignin = async (event: React.SyntheticEvent) => {
+    event.preventDefault();
+    await onSubmit({
+      loginProvider: "WEB",
+      email,
+      password,
+    });
+  };
+
+  const onGoogleSignin = async (code: string) => {
+    await onSubmit({
+      loginProvider: "GOOGLE",
+      code,
+    });
+  };
+
+  // async function onSubmit(event: React.SyntheticEvent) {
+  //   event.preventDefault();
+  //   setIsLoading(true);
+  //   try {
+  //     const result = await axios.post(
+  //       BASE_API_URL + "/api/v1/auth/authenticate",
+  //       {
+  //         email: email,
+  //         password: password,
+  //         loginProvider: "WEB",
+  //       }
+  //     );
+  //     if (result.status === 200) {
+  //       console.log(result.data);
+  //       const token = result.data.token;
+  //       setCookie("token", token);
+  //       toast.success("Login successful");
+  //       router.push("/dashboard");
+  //     } else {
+  //       toast.error("Invalid email or password");
+  //     }
+  //   } catch (error) {
+  //     console.log("error1:", error);
+  //     if (isAxiosError(error)) {
+  //       if (error.response?.status === 401) {
+  //         toast.error("Invalid email or password");
+  //       } else {
+  //         toast.error("Something went wrong");
+  //       }
+  //     }
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // }
 
   return (
     <div className={cn("grid gap-6", className)} {...props}>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmitSignin}>
         <div className="grid gap-2">
           <div className="grid gap-1">
             <Label className="sr-only" htmlFor="email">
@@ -111,15 +172,7 @@ const UserAuthForm = ({ className, isLogin, ...props }: UserAuthFormProps) => {
           </span>
         </div>
       </div>
-      <Button variant="outline" type="button" disabled={isLoading}>
-        {isLoading ? (
-          <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-        ) : (
-          // <Icons.google className="mr-2 h-5 w-5 scale-75" />
-          <Icons.google className="mr-2 h-4 w-4" />
-        )}{" "}
-        Google
-      </Button>
+      <GoogleLogin isLoading={isLoading} onSignInCode={onGoogleSignin} />
 
       <Button variant="outline" type="button" disabled={isLoading}>
         {isLoading ? (

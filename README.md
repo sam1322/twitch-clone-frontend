@@ -11,6 +11,10 @@ https://youtu.be/HM2RqCHavVM
 
 First, run the development server:
 
+
+https://github.com/sam1322/twitch-clone-frontend/assets/43106385/8e6db5f8-5001-48d6-b9fb-06a0eef82e41
+
+
 ```bash
 npm run dev
 # or

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,11 +18,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
-      <Toaster
-        richColors
-        closeButton
-      />
+      <body className={inter.className}>
+        <ThemeProvider
+          attribute="class"
+          // defaultTheme="system"
+          // enableSystem
+          // disableTransitionOnChange
+          forcedTheme='dark'
+          storageKey='streamgames-theme'
+        >
+          {/* <Toaster richColors closeButton /> */}
+          <Toaster theme="light" position="bottom-center" />
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

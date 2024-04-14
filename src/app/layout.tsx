@@ -25,6 +25,7 @@ export default function RootLayout({
           // enableSystem
           // disableTransitionOnChange
           forcedTheme='dark'
+          // forcedTheme="light"
           storageKey='streamgames-theme'
         >
           {/* <Toaster richColors closeButton /> */}

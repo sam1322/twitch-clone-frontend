@@ -27,7 +27,7 @@ const Search: FC<SearchProps> = ({}) => {
 
       router.push(url);
     } catch (error) {
-      console.error(error);
+      console.error("error", error);
     }
   };
 

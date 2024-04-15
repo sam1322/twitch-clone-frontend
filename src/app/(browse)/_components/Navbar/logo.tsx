@@ -15,11 +15,13 @@ interface LogoProps {}
 const Logo: FC<LogoProps> = ({}) => {
   return (
     <Link href="/">
-      <div className="hidden lg:flex items-center gap-x-4 hover:opacity-75 transition">
-        <div className="bg-white rounded-full p-1">
+      <div className="flex items-center gap-x-4 hover:opacity-75 transition">
+        <div className="bg-white rounded-full p-1 mr-12 shrink-0 lg:mr-0 lg:shrink">
           <Image src="/spooky.svg" alt="Gamehub" height="32" width="32" />
         </div>
-        <div className={cn(font.className)}>
+        <div className={cn(
+          "hidden lg:block"
+          ,font.className)}>
           <div className="text-lg font-semibold">Gamehub</div>
           <div className="text-xs text-muted-foreground">Let&apos;s play</div>
         </div>

@@ -1,18 +1,22 @@
-import { FC } from "react";
-import Navbar from "./_components/Navbar";
-import Sidebar from "./_components/Sidebar";
+import { Suspense } from "react";
 import Container from "./_components/Container";
+import Navbar from "./_components/Navbar";
+import { Sidebar, SidebarSkeleton } from "./_components/Sidebar";
 
 interface BrowseLayoutProps {
   children: React.ReactNode;
 }
 
-const BrowseLayout: FC<BrowseLayoutProps> = ({ children }) => {
+// export const dynamic = "force-dynamic";
+
+const BrowseLayout = ({ children }: BrowseLayoutProps) => {
   return (
     <>
       <Navbar />
       <div className="h-full flex pt-20">
-        <Sidebar />
+        <Suspense fallback={<SidebarSkeleton />}>
+          <Sidebar />
+        </Suspense>
         <Container>{children}</Container>
       </div>
     </>

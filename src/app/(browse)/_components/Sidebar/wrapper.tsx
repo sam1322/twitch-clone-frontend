@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { useSidebar } from "@/store/use-sidebar";
 import { FC } from "react";
 import { useIsClient } from "usehooks-ts";
+import { FollowingSkeleton } from "./following";
 import { RecommendedSkeleton } from "./recommended";
 import { ToggleSkeleton } from "./toggle";
 
@@ -21,13 +22,11 @@ const Wrapper: FC<WrapperProps> = ({ children }) => {
 
   const { collapsed } = useSidebar((state) => state);
 
-  console.log("Sidebar");
-
   if (!isClient)
     return (
       <aside className="fixed left-0 flex flex-col w-[70px] lg:w-60 h-full bg-[#21292a] border-r border-[#2D2E35] z-50">
         <ToggleSkeleton />
-        {/* <FollowingSkeleton /> */}
+        <FollowingSkeleton />
         <RecommendedSkeleton />
       </aside>
     );

@@ -21,7 +21,7 @@ const page: FC<pageProps> = ({}) => {
 
   const fetchStreamKey = async () => {
     try {
-      console.log(headerConfig, "header");
+      // console.log(headerConfig, "header");
       const result = await axios.get(
         BASE_API_URL + "/api/v1/streamKey",
         headerConfig

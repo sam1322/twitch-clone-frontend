@@ -23,7 +23,7 @@ export const Recommended: FC<RecommendedProps> = ({ data }) => {
         {data.map((user) => (
           <UserItem
             key={user.userId}
-            userName={user.userName}
+            userName={user.userName ?? "User"}
             // imageUrl={user.imageUrl}
             imageUrl={user.userImage}
             isLive={user?.stream?.isLive}

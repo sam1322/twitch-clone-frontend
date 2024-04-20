@@ -1,15 +1,17 @@
+import LogoutTooltip from "@/components/auth/LogoutTooltip";
 import { Button } from "@/components/ui/button";
+import { getSelf } from "@/lib/auth-service";
 import { Clapperboard } from "lucide-react";
 import Link from "next/link";
 
 const Actions = async ({}) => {
-  const user = { username: "test" };
-  //   const user = null;
+  const user = await getSelf();
+
   return (
     <div className="flex items-center justify-end gap-x-2 ml-4 lg:ml-0">
       {!user ? (
-        <Button size="sm" variant="primary">
-          Login
+        <Button size="sm" variant="primary" asChild>
+          <Link href="/sign-in">Login</Link>
         </Button>
       ) : (
         <div className="flex items-center gap-x-4">
@@ -24,7 +26,7 @@ const Actions = async ({}) => {
               <span className="hidden lg:block">Dashboard</span>
             </Link>
           </Button>
-          {/* <UserButton afterSignOutUrl="/" /> */}
+          <LogoutTooltip user={user}/>
         </div>
       )}
     </div>

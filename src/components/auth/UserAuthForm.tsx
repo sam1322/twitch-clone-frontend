@@ -44,7 +44,7 @@ const UserAuthForm = ({ className, isLogin, ...props }: UserAuthFormProps) => {
         const token = result.data.token;
         setCookie("token", token);
         toast.success(isLogin ? "Login successful" : "Signup successful");
-        router.push("/dashboard");
+        router.push("/");
       } else {
         toast.error("Invalid email or password");
       }
@@ -122,8 +122,8 @@ const UserAuthForm = ({ className, isLogin, ...props }: UserAuthFormProps) => {
   return (
     <div className={cn("grid gap-6", className)} {...props}>
       <form onSubmit={onSubmitSignin}>
-        <div className="grid gap-2">
-          <div className="grid gap-1">
+        <div className="grid gap-4">
+          <div className="grid gap-2">
             <Label className="sr-only" htmlFor="email">
               Email
             </Label>

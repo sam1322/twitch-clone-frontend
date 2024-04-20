@@ -9,7 +9,8 @@ import LiveBadge from "@/components/live-badge";
 const avatarSizes = cva("", {
   variants: {
     size: {
-      default: "h-8 w-8",
+      // default: "h-8 w-8",
+      default: "h-10 w-10",
       lg: "h-14 w-14",
       md: "h-12 w-12",
     },

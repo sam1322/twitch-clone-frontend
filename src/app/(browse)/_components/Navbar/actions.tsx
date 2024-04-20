@@ -1,10 +1,14 @@
 import LogoutTooltip from "@/components/auth/LogoutTooltip";
 import { Button } from "@/components/ui/button";
 import { getSelf } from "@/lib/auth-service";
-import { Clapperboard } from "lucide-react";
+import { Clapperboard, LogOut } from "lucide-react";
 import Link from "next/link";
 
-const Actions = async ({}) => {
+interface ActionsProps {
+  creatorDashboard?: boolean;
+}
+
+const Actions = async ({ creatorDashboard = false }: ActionsProps) => {
   const user = await getSelf();
 
   return (
@@ -21,12 +25,19 @@ const Actions = async ({}) => {
             className="text-muted-foreground hover:text-primary"
             asChild
           >
-            <Link href={`/u/${user.username}`}>
-              <Clapperboard className="h-5 w-5 lg:mr-2" />
-              <span className="hidden lg:block">Dashboard</span>
-            </Link>
+            {creatorDashboard ? (
+              <Link href="/">
+                <LogOut className="h-5 w-5 mr-2" />
+                Exit
+              </Link>
+            ) : (
+              <Link href={`/u/${user.userName}`}>
+                <Clapperboard className="h-5 w-5 lg:mr-2" />
+                <span className="hidden lg:block">Dashboard</span>
+              </Link>
+            )}
           </Button>
-          <LogoutTooltip user={user}/>
+          <LogoutTooltip user={user} />
         </div>
       )}
     </div>

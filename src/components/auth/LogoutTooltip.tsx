@@ -4,21 +4,18 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { signOut } from "@/lib/auth-service";
+import { cn } from "@/lib/utils";
 import { ArrowRightFromLine, Settings } from "lucide-react";
 import { FC } from "react";
-import { UserAvatar } from "../user-avatar";
 import { Button, buttonVariants } from "../ui/button";
-import { cn } from "@/lib/utils";
-import { signOut } from "@/lib/auth-service";
-import Image from "next/image";
+import { UserAvatar } from "../user-avatar";
 
 interface LogoutTooltipProps {
   user: any;
 }
 
 const LogoutTooltip: FC<LogoutTooltipProps> = ({ user }) => {
-  console.log("logout", user);
-
   return (
     <div>
       {/* <UserAvatar
@@ -33,29 +30,26 @@ const LogoutTooltip: FC<LogoutTooltipProps> = ({ user }) => {
         <PopoverTrigger asChild>
           <UserAvatar
             className="cursor-pointer"
-            imageUrl={user.imageUrl}
-            // imageUrl="https://cdn.pixabay.com/photo/2015/04/19/08/32/marguerite-729510_640.jpg"
+            imageUrl={user.userImage}
             userName={user.userName}
             // isLive={isLive}
             // showBadge={true}
             size={"default"}
           />
-          {/* <Button variant="outline">Open popover</Button> */}
         </PopoverTrigger>
         <PopoverContent className="w-80">
           <div className="grid gap-4">
             <div className="flex items-center gap-4">
               <UserAvatar
-                // className="cursor-pointer"
-                imageUrl={user.imageUrl}
+                imageUrl={user.userImage}
                 userName={user.userName}
                 // isLive={isLive}
                 // showBadge={true}
                 size={"md"}
               />
-
-              {/* <Image
-                src={user.imageUrl}
+              {/* 
+              <Image
+                src={user.userImage}
                 alt="Google Profile Image"
                 referrerPolicy="no-referrer"
                 width={100}
@@ -98,7 +92,6 @@ const LogoutTooltip: FC<LogoutTooltipProps> = ({ user }) => {
               </div>
             </div> */}
             <form action={signOut} className="w-full">
-      
               <Button
                 type="submit"
                 variant="ghost"

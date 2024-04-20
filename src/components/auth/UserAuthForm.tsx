@@ -3,14 +3,14 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { BASE_API_URL, BASE_API_URL_V1 } from "@/constants/path";
+import { BASE_API_URL } from "@/constants/path";
 import { cn } from "@/lib/utils";
 import axios, { isAxiosError } from "axios";
-import { Icons } from "../icons";
+import { setCookie } from "cookies-next";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
-import { setCookie } from "cookies-next";
+import { Icons } from "../icons";
 import GoogleLogin from "./Google/GoogleLogin";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -45,6 +45,7 @@ const UserAuthForm = ({ className, isLogin, ...props }: UserAuthFormProps) => {
         setCookie("token", token);
         toast.success(isLogin ? "Login successful" : "Signup successful");
         router.push("/");
+        router.refresh();
       } else {
         toast.error("Invalid email or password");
       }

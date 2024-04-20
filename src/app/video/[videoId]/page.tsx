@@ -25,7 +25,7 @@ const page: FC<pageProps> = ({}) => {
       const data = result.data;
       setUrl(data.videoUrl);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 

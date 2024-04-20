@@ -22,7 +22,7 @@ export const UserItem: FC<UserItemProps> = ({ userName, imageUrl, isLive }) => {
 
   // redirect to user page
   const href = `/${userName}`;
-  const isActive = pathname === href;
+  const isActive = decodeURIComponent(pathname) === href;
 
   return (
     <Button
@@ -56,15 +56,13 @@ export const UserItem: FC<UserItemProps> = ({ userName, imageUrl, isLive }) => {
   );
 };
 
-
-
 export const UserItemSkeleton = () => {
-    return (
-      <li className="flex items-center gap-x-4 px-3 py-2">
-        <Skeleton className="min-h-[32px] min-w-[32px] rounded-full" />
-        <div className="flex-1">
-          <Skeleton className="h-6" />
-        </div>
-      </li>
-    );
-  };
+  return (
+    <li className="flex items-center gap-x-4 px-3 py-2">
+      <Skeleton className="min-h-[32px] min-w-[32px] rounded-full" />
+      <div className="flex-1">
+        <Skeleton className="h-6" />
+      </div>
+    </li>
+  );
+};

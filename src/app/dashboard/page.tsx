@@ -26,7 +26,7 @@ const page: FC<pageProps> = ({}) => {
       const data = result.data;
       setVideoList(data);
     } catch (error) {
-      console.log(error);
+      console.error("error", error);
     }
   };
 

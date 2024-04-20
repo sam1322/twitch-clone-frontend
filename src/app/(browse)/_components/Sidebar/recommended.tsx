@@ -11,7 +11,6 @@ export const Recommended: FC<RecommendedProps> = ({ data }) => {
   const { collapsed } = useSidebar((state) => state);
 
   const showLabel = !collapsed && data.length > 0;
-  console.log("data", data);
 
   return (
     <div>

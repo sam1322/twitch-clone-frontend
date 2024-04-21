@@ -1,21 +1,26 @@
 import { BASE_API_URL } from "@/constants/path";
 import axios from "axios";
-import { getSelf } from "./auth-service";
+import { cookies } from "next/headers";
+import { getCookie } from "cookies-next";
+import { headerConfigServerSideFn } from "@/constants/config-serverside";
 
 export const getRecommended = async () => {
   try {
     let userId;
-    try {
-      const self = await getSelf();
-      userId = self.id;
-    } catch (error) {
-      userId = null;
-    }
+    // try {
+    //   const self = await getSelf();
+    //   userId = self.id;
+    // } catch (error) {
+    //   userId = null;
+    // }
+
+    const token = getCookie("token", { cookies });
+    const headers = token ? headerConfigServerSideFn(token) : {};
 
     await new Promise((resolve) => setTimeout(resolve, 400));
     const result = await axios.get(
-      BASE_API_URL + "/api/v1/user/recommendations"
-      // ,      headerConfigServerSide
+      BASE_API_URL + "/api/v1/user/recommendations",
+      headers
     );
     return result.data;
   } catch (error) {

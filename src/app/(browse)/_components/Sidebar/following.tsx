@@ -27,8 +27,7 @@ export const Following: FC<FollowingProps> = ({ data }) => {
             key={follower.followerId}
             userName={follower.fullName}
             imageUrl={follower.userImage}
-            isLive={true}
-            // isLive={user?.stream?.isLive}
+            isLive={follower?.currentStream?.live}
           />
         ))}
       </ul>
@@ -36,15 +35,12 @@ export const Following: FC<FollowingProps> = ({ data }) => {
   );
 };
 
-
-
 export const FollowingSkeleton = () => {
-    return (
-        <ul className="px-2 pt-2 lg:pt-0">
-            {[...Array(3)].map((_, i) => (
-                <UserItemSkeleton
-                key={i}/>
-            ))}
-        </ul>
-    );
+  return (
+    <ul className="px-2 pt-2 lg:pt-0">
+      {[...Array(3)].map((_, i) => (
+        <UserItemSkeleton key={i} />
+      ))}
+    </ul>
+  );
 };

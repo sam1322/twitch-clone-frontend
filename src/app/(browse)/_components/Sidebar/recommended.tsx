@@ -26,7 +26,7 @@ export const Recommended: FC<RecommendedProps> = ({ data }) => {
             userName={user.userName ?? "User"}
             // imageUrl={user.imageUrl}
             imageUrl={user.userImage}
-            isLive={user?.stream?.isLive}
+            isLive={user?.currentStream?.live}
           />
         ))}
       </ul>

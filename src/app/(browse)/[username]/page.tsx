@@ -3,6 +3,8 @@ import { getUserByUsername } from "@/lib/user-service";
 import { notFound } from "next/navigation";
 import Actions from "./_components/actions";
 import { isBlockedByUser } from "@/lib/block-service";
+import { StreamPlayer } from "@/components/stream-player";
+import { getSelf } from "@/lib/auth-service";
 
 interface UserNamePageProps {
   params: {
@@ -20,11 +22,24 @@ const UserNamePage = async ({ params }: UserNamePageProps) => {
   const isBlocked = await isBlockedByUser(user.userId, false);
   const isBlocking = await isBlockedByUser(user.userId);
 
+  const viewer = await getSelf();
+
+
   // if (isBlocked) {
   //   notFound();
   // }
 
   const userName = decodeURI(params.username);
+
+  return (
+    <StreamPlayer
+      user={user}
+      viewer={viewer}
+      isFollowing={isFollowing}
+      stream={user?.currentStream}
+    />
+  );
+
   return (
     <div>
       <div>UserNamePage : {userName}</div>

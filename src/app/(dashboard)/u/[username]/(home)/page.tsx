@@ -1,6 +1,7 @@
-import StreamPlayer from "@/components/stream-player";
+import { StreamPlayer } from "@/components/stream-player";
 import { getSelf } from "@/lib/auth-service";
 import { getStreamByUserId } from "@/lib/stream-service";
+import { getUserByUsername } from "@/lib/user-service";
 
 interface PageProps {
   params: {
@@ -9,12 +10,18 @@ interface PageProps {
 }
 
 const Page = async ({ params }: PageProps) => {
-  const user = await getSelf();
+  const user = await getUserByUsername(params.username);
+  const viewer = await getSelf();
   const stream = await getStreamByUserId();
 
   return (
     <div className="h-full">
-      <StreamPlayer user={user} isFollowing={true} stream={stream} />
+      <StreamPlayer
+        user={user}
+        viewer={viewer}
+        isFollowing={true}
+        stream={stream}
+      />
     </div>
   );
 };

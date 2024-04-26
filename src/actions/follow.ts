@@ -17,8 +17,7 @@ export const onFollow = async (id: string) => {
     return followedUser;
   } catch (error) {
     if (error instanceof Error) {
-      console.error("error", error.message);
-      throw new Error("Internal Error");
+      throw new Error(error?.message || "Internal Error");
     }
   }
 };
@@ -36,8 +35,7 @@ export const onUnfollow = async (id: string) => {
     return unfollowedUser;
   } catch (error) {
     if (error instanceof Error) {
-      console.error("error", error.message);
-      throw new Error("Internal Error");
+      throw new Error(error?.message || "Internal Error");
     }
   }
 };

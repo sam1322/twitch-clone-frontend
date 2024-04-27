@@ -1,13 +1,13 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useRef, useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 // import { Participant, Track } from "livekit-client";
 // import { useTracks } from "@livekit/components-react";
+import { cn } from "@/lib/utils";
 import { useEventListener } from "usehooks-ts";
 import { FullscreenControl } from "./fullscreen-control";
 import { VolumeControl } from "./volume-control";
-import { cn } from "@/lib/utils";
 
 // import { VolumeControl } from "./volume-control";
 // import { FullscreenControl } from "./fullscreen-control";
@@ -93,17 +93,26 @@ export const LiveVideo = ({ participant, stream }: LiveVideoProps) => {
         controls
         pip
         width="100%"
+        height={"100%"}
         // height="700px"
-        // height="auto"
+        // height={matches ? (isFullscreen ? "100vh" : "86vh") : "auto"}
+        // style={{
+        //   position: "absolute",
+        //   top: 0,
+        //   left: 0,
+        //   width: "100%",
+        //   height: "100%",
+        // }}
         // height="90vh"
-        height={isFullscreen ? "100vh" : "90vh"}
+        // height={isFullscreen ? "100vh" : "90vh"}
       />
 
       {/* <video ref={videoRef} width="100%" /> */}
       <div
         className={cn(
-          "absolute top-0  w-full opacity-0 hover:opacity-100 hover:transition-all",
-          isFullscreen ? "h-[100vh]" : "h-[90vh]"
+          "absolute top-0  w-full opacity-0 hover:opacity-100 hover:transition-all hidden"
+          // matches ? (isFullscreen ? "h-[100vh]" : "h-[86vh]") : ""
+          // ,isFullscreen ? "h-[100vh]" : "h-[90vh]"
         )}
       >
         <div className="absolute bottom-0 flex h-14 w-full items-center justify-between bg-gradient-to-r from-neutral-900 px-4">

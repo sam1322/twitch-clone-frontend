@@ -1,5 +1,5 @@
 import { BASE_API_URL } from "@/constants/path";
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 import { cookies } from "next/headers";
 import { getCookie } from "cookies-next";
 import { headerConfigServerSideFn } from "@/constants/config-serverside";
@@ -24,7 +24,11 @@ export const getRecommended = async () => {
     );
     return result.data;
   } catch (error) {
-    console.error("Error", error);
+    if (isAxiosError(error)) {
+      console.error("Recommendation Error", error.response?.data);
+    } else if (error instanceof Error) {
+      console.error("Recommendation Error", error.message);
+    }
   }
   return [];
 };

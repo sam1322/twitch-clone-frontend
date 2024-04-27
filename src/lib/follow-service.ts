@@ -41,14 +41,13 @@ export const followUser = async (userId: string) => {
     );
     return result.data;
   } catch (error) {
+    let message = "Something went wrong";
     if (isAxiosError(error)) {
-      console.error("error status", error.response?.status);
-      console.error("error", error.response?.data);
+      message = error.response?.data?.message || "Internal Error";
     } else if (error instanceof Error) {
-      console.error("error", error.message);
+      message = error?.message || "Internal Error";
     }
-    // throw error;
-    throw new Error("Internal Error");
+    throw new Error(message);
   }
 };
 
@@ -66,13 +65,13 @@ export const unfollowUser = async (userId: string) => {
     );
     return result.data;
   } catch (error) {
+    let message = "Something went wrong";
     if (isAxiosError(error)) {
-      console.error("error status", error.response?.status);
-      console.error("error", error.response?.data);
+      message = error.response?.data?.message || "Internal Error";
     } else if (error instanceof Error) {
-      console.error("error", error.message);
+      message = error?.message || "Internal Error";
     }
-    return {};
+    throw new Error(message);
   }
 };
 

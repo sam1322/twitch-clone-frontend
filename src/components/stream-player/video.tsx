@@ -53,8 +53,9 @@ export const Video = ({ hostName, hostIdentity, stream }: VideoProps) => {
 
   const initialiseFn = () => {
     let content;
-    if (stream.live) {
+    if (stream?.live) {
       content = <OfflineVideo username={hostName} />;
+      setContentDiv(content);
     } else {
       // content = <LoadingVideo label={connectionState} />;
       setTimeout(() => {
@@ -66,18 +67,20 @@ export const Video = ({ hostName, hostIdentity, stream }: VideoProps) => {
   };
 
   return (
-    <div className="aspect-video border-b border-b1 group relative w-full h-full">
-      {/* <div className="aspect-video border-b group relative lg:h-[96%]"> */}
+    // <div className="aspect-video border-b group relative ">
+    // {/* <div className="aspect-video border-b group relative w-full h-full"> */}
+    // <div className="aspect-video border-b group relative w-full lg:max-h-[96vh]">
+      <div className="aspect-video border-b group relative w-full lg:max-h-[96%]">
       {/* {content} */}
       {contentDiv}
     </div>
   );
 };
 
-// export const VideoSkeleton = () => {
-//   return (
-//     <div className="aspect-video border-x border-background">
-//       <Skeleton className="h-full w-full rounded-none" />
-//     </div>
-//   );
-// };
+export const VideoSkeleton = () => {
+  return (
+    <div className="aspect-video border-x border-background">
+      <Skeleton className="h-full w-full rounded-none" />
+    </div>
+  );
+};

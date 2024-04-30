@@ -21,6 +21,8 @@ const Page = async ({ params }: PageProps) => {
         viewer={viewer}
         isFollowing={true}
         stream={stream}
+        videoPage={false}
+        video={stream?.currentVideo}
       />
     </div>
   );

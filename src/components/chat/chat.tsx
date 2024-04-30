@@ -7,6 +7,7 @@ import { ChatList, ChatListSkeleton } from "./chat-list";
 import { ChatCommunity } from "./chat-community";
 
 interface ChatProps {
+  video: any;
   hostName: string;
   hostIdentity: string;
   viewerName: string;
@@ -17,6 +18,7 @@ interface ChatProps {
 }
 
 export const Chat: FC<ChatProps> = ({
+  video,
   hostName,
   hostIdentity,
   viewerName,
@@ -25,6 +27,7 @@ export const Chat: FC<ChatProps> = ({
   isChatDelayed,
   isChatFollowersOnly,
 }) => {
+  console.log("video", video);
   const matches = useMediaQuery("(max-width: 1024px)");
 
   const { variant, onExpand } = useChatSidebar((state) => state);

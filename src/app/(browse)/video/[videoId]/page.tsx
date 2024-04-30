@@ -41,6 +41,8 @@ const UserNamePage = async ({ params }: UserNamePageProps) => {
       isFollowing={isFollowing}
       // stream={user?.currentStream}
       stream={video}
+      videoPage={true}
+      video={video}
     />
   );
 };

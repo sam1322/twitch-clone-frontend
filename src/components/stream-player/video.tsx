@@ -21,9 +21,15 @@ interface VideoProps {
   hostName: string;
   hostIdentity: string;
   stream: any;
+  videoPage?: boolean;
 }
 
-export const Video = ({ hostName, hostIdentity, stream }: VideoProps) => {
+export const Video = ({
+  videoPage = true,
+  hostName,
+  hostIdentity,
+  stream,
+}: VideoProps) => {
   const connectionState = "connected";
   const [contentDiv, setContentDiv] = useState<any>(
     <LoadingVideo label={connectionState} />
@@ -51,9 +57,12 @@ export const Video = ({ hostName, hostIdentity, stream }: VideoProps) => {
     initialiseFn();
   }, []);
 
+  // console.log("stream", stream);
+
   const initialiseFn = () => {
     let content;
-    if (!stream?.live && stream?.videoUrl === null) {
+    if (!stream?.live && !videoPage) {
+      // if (!stream?.live && stream?.videoUrl === null) {
       content = <OfflineVideo username={hostName} />;
       setContentDiv(content);
     } else {

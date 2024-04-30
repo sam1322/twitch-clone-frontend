@@ -31,7 +31,7 @@ export const StreamPlayer: FC<StreamPlayerProps> = ({
 
   const { collapsed } = useChatSidebar((state) => state);
 
-  const streamName = stream?.name;
+  const streamName = stream?.name || stream?.title;
   const thumbnailUrl = stream?.thumbnailUrl;
   const chatEnabled = stream?.chatEnabled;
   const chatDelayed = stream?.chatDelayed;

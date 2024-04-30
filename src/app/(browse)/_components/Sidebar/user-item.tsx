@@ -21,7 +21,7 @@ export const UserItem: FC<UserItemProps> = ({ userName, imageUrl, isLive }) => {
   const { collapsed } = useSidebar((state) => state);
 
   // redirect to user page
-  const href = `/${userName}`;
+  const href = `/user/${userName}`;
   const isActive = decodeURIComponent(pathname) === href;
 
   return (

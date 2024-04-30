@@ -4,6 +4,7 @@ import { getSelf } from "@/lib/auth-service";
 import { redirect } from "next/navigation";
 import React, { FC } from "react";
 import { Sidebar } from "./_components/Sidebar";
+import { getUserByUsername } from "@/lib/user-service";
 
 interface layoutProps {
   params: { username: string };
@@ -11,9 +12,10 @@ interface layoutProps {
 }
 
 const layout: FC<layoutProps> = async ({ params, children }) => {
-  const user = await getSelf();
+  // const user = await getSelf();
+  const user = await getUserByUsername(decodeURIComponent(params.username));
 
-  if (!user || user?.userName !== params.username) {
+  if (!user || user?.userName !== decodeURIComponent(params.username)) {
     redirect("/");
   }
 

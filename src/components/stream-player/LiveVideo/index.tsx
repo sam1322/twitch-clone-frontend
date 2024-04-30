@@ -20,10 +20,8 @@ interface LiveVideoProps {
 }
 
 export const LiveVideo = ({ participant, stream }: LiveVideoProps) => {
-  const hlsUrl =
-    "http://localhost:8000/live/" +
-    stream?.currentVideo?.videoUrl +
-    "/index.m3u8"; // Replace with your HLS stream URL
+  const src = stream?.currentVideo?.videoUrl ?? stream?.videoUrl;
+  const hlsUrl = "http://localhost:8000/live/" + src + "/index.m3u8"; // Replace with your HLS stream URL
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);

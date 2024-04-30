@@ -53,7 +53,7 @@ export const Video = ({ hostName, hostIdentity, stream }: VideoProps) => {
 
   const initialiseFn = () => {
     let content;
-    if (stream?.live) {
+    if (!stream?.live && stream?.videoUrl === null) {
       content = <OfflineVideo username={hostName} />;
       setContentDiv(content);
     } else {
@@ -70,7 +70,7 @@ export const Video = ({ hostName, hostIdentity, stream }: VideoProps) => {
     // <div className="aspect-video border-b group relative ">
     // {/* <div className="aspect-video border-b group relative w-full h-full"> */}
     // <div className="aspect-video border-b group relative w-full lg:max-h-[96vh]">
-      <div className="aspect-video border-b group relative w-full lg:max-h-[96%]">
+    <div className="aspect-video border-b group relative w-full lg:max-h-[96%]">
       {/* {content} */}
       {contentDiv}
     </div>

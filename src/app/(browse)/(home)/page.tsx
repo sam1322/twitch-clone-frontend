@@ -1,9 +1,13 @@
-import { FC } from "react";
+import { Suspense } from "react";
 
-interface HomePageProps {}
+import { Results, ResultsSkeleton } from "./_components/results";
 
-const HomePage: FC<HomePageProps> = ({}) => {
-  return <div>HomePage</div>;
+export default function Page() {
+  return (
+    <div className="h-full p-8 max-w-screen-2xl mx-auto">
+      <Suspense fallback={<ResultsSkeleton />}>
+        <Results />
+      </Suspense>
+    </div>
+  );
 };
-
-export default HomePage;

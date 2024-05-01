@@ -5,7 +5,12 @@ import { ChatHeader, ChatHeaderSkeleton } from "./chat-header";
 import { ChatForm, ChatFormSkeleton } from "./chat-form";
 import { ChatList, ChatListSkeleton } from "./chat-list";
 import { ChatCommunity } from "./chat-community";
-
+import { CompatClient, Stomp, wsErrorCallbackType } from "@stomp/stompjs";
+//@ts-expect-error
+import SockJS from "sockjs-client";
+import { BASE_API_URL } from "@/constants/path";
+import { headerConfig } from "@/constants/config";
+import { getChatByVideoId } from "@/lib/chat-service";
 interface ChatProps {
   video: any;
   hostName: string;
@@ -34,26 +39,88 @@ export const Chat: FC<ChatProps> = ({
 
   const [value, setValue] = useState("");
   const [messages, setMessages] = useState([]);
-  // const { chatMessages: messages, send } = useChat();
+  const [stompClient, setStompClient] = useState<CompatClient | null>(null);
 
-  // const reversedMessages = useMemo(() => {
-  //   return messages.sort((a, b) => b.timestamp - a.timestamp);
-  // }, [messages]);
+  const connectHeaders = {
+    Authorization: headerConfig.headers.Authorization,
+  };
+
+  useEffect(() => {
+    const socket = new SockJS(BASE_API_URL + "/chat");
+    const stompClient = Stomp.over(socket);
+
+    stompClient.connect(
+      connectHeaders,
+      () => {
+        stompClient.subscribe(
+          `/topic/chat/${video.videoId}`,
+          onMessageReceived
+        );
+        // stompClient.subscribe("/topic/chat", onMessageReceived);
+        // stompClient.subscribe("/topic/public", onMessageReceived);
+      },
+      onError
+    );
+    setStompClient(stompClient);
+
+    return () => {
+      stompClient.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    getChatHistory();
+  }, []);
+
+  const getChatHistory = async () => {
+    try {
+      const result = await getChatByVideoId(video.videoId);
+      setMessages(result.reverse());
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error("error", error.message);
+      }
+    }
+  };
+
+  // @ts-ignore
+  const onError = (err) => {
+    // @ts-ignore
+    console.error("error in chat message", err.headers.message);
+  };
+
+  const onMessageReceived = (payload) => {
+    // console.log("message received", payload.body);
+    const message = JSON.parse(payload.body);
+    setMessages((prevMessages) => [message, ...prevMessages]);
+  };
+
+  const sendMessage = () => {
+    if (stompClient && value) {
+      const chatMessage = {
+        message: value,
+        videoId: video.videoId,
+      };
+      // stompClient.send(
+      //   "/app/chatMessage",
+      //   // "/app/chat.sendMessage",
+      //   {},
+      //   JSON.stringify(chatMessage)
+      // );
+
+      stompClient.publish({
+        // destination: "/app/chatMessage",
+        destination: `/app/chatMessage/${video.videoId}`,
+        body: JSON.stringify(chatMessage),
+        headers: connectHeaders,
+      });
+
+      setValue("");
+    }
+  };
 
   const onSubmit = () => {
-    // if (!send) return;
-
-    // send(value);
-    setMessages([
-      {
-        timestamp: Date.now(),
-        // name: "Sam",
-        name: viewerName,
-        message: value,
-      },
-      ...messages,
-    ]);
-    setValue("");
+    sendMessage();
   };
 
   const onChange = (value: string) => {

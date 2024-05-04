@@ -8,15 +8,18 @@ https://youtu.be/HM2RqCHavVM
 
 [![Watch the video]](https://youtu.be/HM2RqCHavVM)
 
-[![Watch the video](https://img.youtube.com/vi/T-D1KVIuvjA/maxresdefault.jpg)](https://youtu.be/HM2RqCHavVM)
+[![Watch the video](https://github.com/sam1322/twitch-clone-frontend/assets/43106385/83c86414-cd8b-48e6-b5a8-7f8580174fa7)](https://youtu.be/HM2RqCHavVM)
+
+<!-- ![twitch-clone-app](https://github.com/sam1322/twitch-clone-frontend/assets/43106385/83c86414-cd8b-48e6-b5a8-7f8580174fa7) -->
+
+![twitch-clone-app2](https://github.com/sam1322/twitch-clone-frontend/assets/43106385/9419582f-e037-4532-921d-6c73ebe7d610)
 
 
-First, run the development server:
 
 
 https://github.com/sam1322/twitch-clone-frontend/assets/43106385/8e6db5f8-5001-48d6-b9fb-06a0eef82e41
 
-
+First, run the development server:
 ```bash
 npm run dev
 # or

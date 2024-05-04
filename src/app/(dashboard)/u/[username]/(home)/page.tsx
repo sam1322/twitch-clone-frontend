@@ -10,7 +10,7 @@ interface PageProps {
 }
 
 const Page = async ({ params }: PageProps) => {
-  const user = await getUserByUsername(params.username);
+  const user = await getUserByUsername(decodeURIComponent(params.username));
   const viewer = await getSelf();
   const stream = await getStreamByUserId();
 
@@ -21,6 +21,8 @@ const Page = async ({ params }: PageProps) => {
         viewer={viewer}
         isFollowing={true}
         stream={stream}
+        videoPage={false}
+        video={stream?.currentVideo}
       />
     </div>
   );

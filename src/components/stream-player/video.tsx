@@ -21,9 +21,15 @@ interface VideoProps {
   hostName: string;
   hostIdentity: string;
   stream: any;
+  videoPage?: boolean;
 }
 
-export const Video = ({ hostName, hostIdentity, stream }: VideoProps) => {
+export const Video = ({
+  videoPage = true,
+  hostName,
+  hostIdentity,
+  stream,
+}: VideoProps) => {
   const connectionState = "connected";
   const [contentDiv, setContentDiv] = useState<any>(
     <LoadingVideo label={connectionState} />
@@ -51,9 +57,12 @@ export const Video = ({ hostName, hostIdentity, stream }: VideoProps) => {
     initialiseFn();
   }, []);
 
+  // console.log("stream", stream);
+
   const initialiseFn = () => {
     let content;
-    if (stream?.live) {
+    if (!stream?.live && !videoPage) {
+      // if (!stream?.live && stream?.videoUrl === null) {
       content = <OfflineVideo username={hostName} />;
       setContentDiv(content);
     } else {
@@ -70,7 +79,7 @@ export const Video = ({ hostName, hostIdentity, stream }: VideoProps) => {
     // <div className="aspect-video border-b group relative ">
     // {/* <div className="aspect-video border-b group relative w-full h-full"> */}
     // <div className="aspect-video border-b group relative w-full lg:max-h-[96vh]">
-      <div className="aspect-video border-b group relative w-full lg:max-h-[96%]">
+    <div className="aspect-video border-b group relative w-full lg:max-h-[96%]">
       {/* {content} */}
       {contentDiv}
     </div>

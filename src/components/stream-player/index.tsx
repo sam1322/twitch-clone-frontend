@@ -16,22 +16,22 @@ interface StreamPlayerProps {
   stream: any;
   user: any;
   viewer: any;
+  videoPage?: boolean;
+  video?: any;
 }
 
 export const StreamPlayer: FC<StreamPlayerProps> = ({
   isFollowing,
   stream,
+  video,
   user,
   viewer,
+  videoPage = true,
 }) => {
-  // const hlsUrl =
-  //   "http://localhost:8000/live/" +
-  //   stream?.currentVideo?.videoUrl +
-  //   "/index.m3u8"; // Replace with your HLS stream URL
 
   const { collapsed } = useChatSidebar((state) => state);
 
-  const streamName = stream?.name;
+  const streamName = stream?.name || stream?.title;
   const thumbnailUrl = stream?.thumbnailUrl;
   const chatEnabled = stream?.chatEnabled;
   const chatDelayed = stream?.chatDelayed;
@@ -43,6 +43,7 @@ export const StreamPlayer: FC<StreamPlayerProps> = ({
   const hostName = user.userName;
 
   // console.log("hls url", hlsUrl);
+
   return (
     <>
       {collapsed && (
@@ -58,6 +59,7 @@ export const StreamPlayer: FC<StreamPlayerProps> = ({
       >
         <div className="space-y-4 col-span-1  lg:col-span-2 xl:col-span-2 2xl:col-span-5 lg:overflow-y-auto hidden-scrollbar pb-10">
           <Video
+            videoPage={videoPage}
             hostName={hostName}
             hostIdentity={user.userId}
             stream={stream}
@@ -88,6 +90,7 @@ export const StreamPlayer: FC<StreamPlayerProps> = ({
         </div>
         <div className={cn("col-span-1 2xl:col-span-1", collapsed && "hidden")}>
           <Chat
+            video={video}
             viewerName={viewer?.userName}
             hostName={hostName}
             hostIdentity={hostIdentity}

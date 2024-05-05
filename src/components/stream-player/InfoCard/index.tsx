@@ -12,13 +12,15 @@ interface InfoCardProps {
   thumbnailUrl: string | null;
   hostIdentity: string;
   viewerIdentity: string;
+  videoId: string;
 }
 
 export const InfoCard = ({
   name,
-  //   thumbnailUrl,
+  thumbnailUrl,
   hostIdentity,
   viewerIdentity,
+  videoId,
 }: InfoCardProps) => {
   // const hostAsViewer = `host-${hostIdentity}`;
 
@@ -26,7 +28,8 @@ export const InfoCard = ({
 
   if (!isHost) return null;
 
-  const thumbnailUrl =    "https://img.freepik.com/free-photo/painting-mountain-lake-with-mountain-background_188544-9126.jpg";
+  // const thumbnailUrl =
+  //   "https://img.freepik.com/free-photo/painting-mountain-lake-with-mountain-background_188544-9126.jpg";
 
   return (
     <div className="px-4">
@@ -43,7 +46,11 @@ export const InfoCard = ({
               Maximize your visibility
             </p>
           </div>
-          <InfoModal initialName={name} initialThumbnailUrl={thumbnailUrl} />
+          <InfoModal
+            videoId={videoId}
+            initialName={name}
+            initialThumbnailUrl={thumbnailUrl}
+          />
         </div>
         <Separator />
         <div className="p-4 lg:p-6 space-y-4">

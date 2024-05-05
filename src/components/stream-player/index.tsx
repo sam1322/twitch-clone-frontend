@@ -28,10 +28,9 @@ export const StreamPlayer: FC<StreamPlayerProps> = ({
   viewer,
   videoPage = true,
 }) => {
-
   const { collapsed } = useChatSidebar((state) => state);
 
-  const streamName = stream?.name || stream?.title;
+  const streamName = video?.title || video?.user?.userName + " is live now";
   const thumbnailUrl = stream?.thumbnailUrl;
   const chatEnabled = stream?.chatEnabled;
   const chatDelayed = stream?.chatDelayed;
@@ -70,7 +69,7 @@ export const StreamPlayer: FC<StreamPlayerProps> = ({
             viewerIdentity={viewerIdentity}
             imageUrl={user.userImage}
             isFollowing={isFollowing}
-            name={streamName || "Stream Name"}
+            name={streamName}
             isLive={stream?.live}
           />
           <InfoCard
@@ -78,6 +77,7 @@ export const StreamPlayer: FC<StreamPlayerProps> = ({
             viewerIdentity={viewerIdentity}
             name={streamName}
             thumbnailUrl={thumbnailUrl}
+            videoId={video?.videoId}
           />
           <AboutCard
             hostName={hostName}
@@ -91,6 +91,7 @@ export const StreamPlayer: FC<StreamPlayerProps> = ({
         <div className={cn("col-span-1 2xl:col-span-1", collapsed && "hidden")}>
           <Chat
             video={video}
+            videoPage={videoPage}
             viewerName={viewer?.userName}
             hostName={hostName}
             hostIdentity={hostIdentity}

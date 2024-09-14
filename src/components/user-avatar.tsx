@@ -1,6 +1,6 @@
 import { cva, type VariantProps } from "class-variance-authority";
 
-import { cn } from "@/lib/utils";
+import { cn, stringToColor } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import LiveBadge from "@/components/live-badge";
@@ -13,6 +13,8 @@ const avatarSizes = cva("", {
       default: "h-10 w-10",
       lg: "h-14 w-14",
       md: "h-12 w-12",
+      "2xl": "h-20 w-20",
+      "4xl": "h-40 w-40",
     },
   },
   defaultVariants: {
@@ -22,7 +24,7 @@ const avatarSizes = cva("", {
 
 interface UserAvatarProps extends VariantProps<typeof avatarSizes> {
   userName: string;
-  imageUrl: string;
+  imageUrl?: string;
   isLive?: boolean;
   showBadge?: boolean;
   className?: string;
@@ -38,6 +40,8 @@ export const UserAvatar = ({
 }: UserAvatarProps) => {
   const canShowBadge = showBadge && isLive;
 
+  const color = stringToColor(userName);
+
   return (
     <div className={cn("relative", className)}>
       <Avatar
@@ -51,7 +55,7 @@ export const UserAvatar = ({
           className="object-cover"
           referrerPolicy="no-referrer"
         />
-        <AvatarFallback>
+        <AvatarFallback style={{ backgroundColor: color }}>
           {userName[0]}
           {userName[userName.length - 1]}
         </AvatarFallback>

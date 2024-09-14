@@ -17,7 +17,6 @@ interface ResultCardProps {
     videoUrl: string;
     videoStatus: "LIVE" | "ENDED";
     videoId: string;
-    // user: User;
     user: any;
   };
 }

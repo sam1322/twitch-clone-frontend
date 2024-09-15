@@ -24,12 +24,12 @@ const UserNamePage = async ({ params }: UserNamePageProps) => {
 
   const viewer = await getSelf();
 
-
   // if (isBlocked) {
   //   notFound();
   // }
 
   const userName = decodeURI(params.username);
+
 
   return (
     <StreamPlayer
@@ -37,7 +37,7 @@ const UserNamePage = async ({ params }: UserNamePageProps) => {
       viewer={viewer}
       isFollowing={isFollowing}
       stream={user?.currentStream}
-      videoPage={false}
+      videoPage={user?.currentStream?.currentVideo?.videoStatus != "LIVE"}
       video={user?.currentStream?.currentVideo}
     />
   );

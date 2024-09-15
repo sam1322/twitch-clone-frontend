@@ -3,6 +3,6 @@ import { getCookie } from "cookies-next";
 export const headerConfig = {
   headers: {
     "Content-Type": "application/json",
-    Authorization: "Bearer " + getCookie("token"),
+    Authorization: getCookie("token") ? "Bearer " + getCookie("token") : null,
   },
 };

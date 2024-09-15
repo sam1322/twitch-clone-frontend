@@ -1,7 +1,12 @@
 "use server";
 
 import { getSelf } from "@/lib/auth-service";
-import { generateStreamKey, updateStreamKey } from "@/lib/stream-service";
+import {
+  UpdateVideoProps,
+  generateStreamKey,
+  updateStreamKey,
+  updateVideo,
+} from "@/lib/stream-service";
 // import { Stream } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
@@ -25,6 +30,22 @@ export const updateStream = async (values: any) => {
     revalidatePath(`/u/${self.userName}/chat`);
     revalidatePath(`/u/${self.userName}`);
     revalidatePath(`/${self.userName}`);
+
+    return result;
+  } catch {
+    throw new Error("Internal Error");
+  }
+};
+
+export const updateVideoInfo = async (values: UpdateVideoProps) => {
+  try {
+    const self = await getSelf();
+
+    const result = await updateVideo(values);
+
+    // revalidatePath(`/u/${self.userName}/chat`);
+    revalidatePath(`/u/${self.userName}`);
+    revalidatePath(`/video/${values.videoId}`);
 
     return result;
   } catch {

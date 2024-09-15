@@ -92,6 +92,7 @@ export const LiveVideo = ({ participant, stream }: LiveVideoProps) => {
         pip
         width="100%"
         height={"100%"}
+        muted
         // height="700px"
         // height={matches ? (isFullscreen ? "100vh" : "86vh") : "auto"}
         // style={{

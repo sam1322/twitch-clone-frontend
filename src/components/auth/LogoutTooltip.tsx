@@ -10,6 +10,7 @@ import { ArrowRightFromLine, Settings } from "lucide-react";
 import { FC } from "react";
 import { Button, buttonVariants } from "../ui/button";
 import { UserAvatar } from "../user-avatar";
+import Link from "next/link";
 
 interface LogoutTooltipProps {
   user: any;
@@ -62,21 +63,22 @@ const LogoutTooltip: FC<LogoutTooltipProps> = ({ user }) => {
                 <p className="text-sm text-muted-foreground">{user.email}</p>
               </div>
             </div>
-
-            <div
-              className={cn(
-                buttonVariants({ variant: "ghost" }),
-                "justify-start pl-0 h-12 cursor-pointer"
-              )}
-            >
-              <div className="h-12 w-12 flex items-center justify-center">
-                <Settings className="w-4 text-muted-foreground" />
-              </div>
-              <div className="grid gap-1">
-                <p className="text-sm text-muted-foreground">Manage Account</p>
-              </div>
-            </div>
-
+            <Link href="settings">
+              <Button
+                type="submit"
+                variant="ghost"
+                className="justify-start pl-0 h-12 cursor-pointer w-full outline-none focus-visible:ring-0"
+              >
+                <div className="h-12 w-12 flex items-center justify-center">
+                  <Settings className="w-4 text-muted-foreground" />
+                </div>
+                <div className="grid gap-1">
+                  <p className="text-sm text-muted-foreground">
+                    Manage Account
+                  </p>
+                </div>
+              </Button>
+            </Link>
             {/* <div
               className={cn(
                 buttonVariants({ variant: "ghost" }),

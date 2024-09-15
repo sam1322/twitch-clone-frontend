@@ -1,11 +1,14 @@
 "use client";
 
-import { toast } from "sonner";
-import { useState, useTransition, useRef, ElementRef } from "react";
-import { useRouter } from "next/navigation";
 import { Trash } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { ElementRef, useRef, useState, useTransition } from "react";
+import { toast } from "sonner";
 
+import { updateVideoInfo } from "@/actions/stream";
+import Hint from "@/components/Hint";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogClose,
@@ -14,21 +17,20 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { updateStream } from "@/actions/stream";
+import { Label } from "@/components/ui/label";
 import { UploadDropzone } from "@/lib/uploadthing";
-import Hint from "@/components/Hint";
 
 interface InfoModalProps {
   initialName: string;
   initialThumbnailUrl: string | null;
-};
+  videoId: string;
+}
 
 export const InfoModal = ({
   initialName,
-  initialThumbnailUrl
+  initialThumbnailUrl,
+  videoId,
 }: InfoModalProps) => {
   const router = useRouter();
   const closeRef = useRef<ElementRef<"button">>(null);
@@ -39,7 +41,7 @@ export const InfoModal = ({
 
   const onRemove = () => {
     startTransition(() => {
-      updateStream({ thumbnailUrl: null })
+      updateVideoInfo({ videoId: videoId, thumbnailUrl: "" })
         .then(() => {
           toast.success("Thumbnail removed");
           setThumbnailUrl("");
@@ -47,20 +49,20 @@ export const InfoModal = ({
         })
         .catch(() => toast.error("Something went wrong"));
     });
-  }
+  };
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     startTransition(() => {
-      updateStream({ name: name })
+      updateVideoInfo({ videoId: videoId, title: name })
         .then(() => {
           toast.success("Stream updated");
           closeRef?.current?.click();
         })
-        .catch(() => toast.error("Something went wrong"))
+        .catch(() => toast.error("Something went wrong"));
     });
-  }
+  };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
@@ -75,15 +77,11 @@ export const InfoModal = ({
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>
-            Edit stream info
-          </DialogTitle>
+          <DialogTitle>Edit stream info</DialogTitle>
         </DialogHeader>
         <form onSubmit={onSubmit} className="space-y-14">
           <div className="space-y-2">
-            <Label>
-              Name
-            </Label>
+            <Label>Name</Label>
             <Input
               disabled={isPending}
               placeholder="Stream name"
@@ -92,9 +90,7 @@ export const InfoModal = ({
             />
           </div>
           <div className="space-y-2">
-            <Label>
-              Thumbnail
-            </Label>
+            <Label>Thumbnail</Label>
             {thumbnailUrl ? (
               <div className="relative aspect-video rounded-xl overflow-hidden border border-white/10">
                 <div className="absolute top-2 right-2 z-[10]">
@@ -122,14 +118,25 @@ export const InfoModal = ({
                   endpoint="thumbnailUploader"
                   appearance={{
                     label: {
-                      color: "#FFFFFF"
+                      color: "#FFFFFF",
                     },
                     allowedContent: {
-                      color: "#FFFFFF"
-                    }
+                      color: "#FFFFFF",
+                    },
+                    button: {
+                      color: "#FFFFFF",
+                      fontSize: "14px",
+                      padding: "0px 10px",
+                      marginBottom: "20px",
+                    },
                   }}
-                  onClientUploadComplete={(res: any) => {
-                    setThumbnailUrl(res?.[0]?.url);
+                  onClientUploadComplete={async (res: any) => {
+                    const thumbnailUrl = res?.[0]?.url;
+                    setThumbnailUrl(thumbnailUrl);
+                    await updateVideoInfo({
+                      videoId: videoId,
+                      thumbnailUrl: thumbnailUrl,
+                    });
                     router.refresh();
                     closeRef?.current?.click();
                   }}
@@ -143,11 +150,7 @@ export const InfoModal = ({
                 Cancel
               </Button>
             </DialogClose>
-            <Button
-              disabled={isPending}
-              variant="primary"
-              type="submit"
-            >
+            <Button disabled={isPending} variant="primary" type="submit">
               Save
             </Button>
           </div>

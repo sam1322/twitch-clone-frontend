@@ -14,6 +14,7 @@ interface ChatFormProps {
   isFollowersOnly: boolean;
   isFollowing: boolean;
   isDelayed: boolean;
+  videoPage: boolean;
 }
 
 export const ChatForm: FC<ChatFormProps> = ({
@@ -24,12 +25,13 @@ export const ChatForm: FC<ChatFormProps> = ({
   isFollowersOnly,
   isFollowing,
   isDelayed,
+  videoPage,
 }) => {
   const [isDelayBlocked, setIsDelayBlocked] = useState(false);
 
   const isFollowersOnlyAndNotFollowing = isFollowersOnly && !isFollowing;
   const isDisabled =
-    isHidden || isDelayBlocked || isFollowersOnlyAndNotFollowing;
+    isHidden || isDelayBlocked || isFollowersOnlyAndNotFollowing || videoPage;
 
   // submits the chat message
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -68,8 +70,8 @@ export const ChatForm: FC<ChatFormProps> = ({
           disabled={isDisabled}
           placeholder="Start chatting..."
           className={cn(
-            "border-white/10"
-            ,(isFollowersOnly || isDelayed) && "rounded-t-none border-t-0"
+            "border-white/10",
+            (isFollowersOnly || isDelayed) && "rounded-t-none border-t-0"
           )}
         />
       </div>

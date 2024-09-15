@@ -14,7 +14,7 @@ export const headerConfigServerSideFn = (token: string) => {
   return {
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Bearer " + token,
+      Authorization: token ? "Bearer " + token : null,
     },
   };
 };

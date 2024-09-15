@@ -77,3 +77,40 @@ export const generateStreamKey = async () => {
     throw new Error("Internal Error");
   }
 };
+
+export interface UpdateVideoProps {
+  videoId: string;
+  title?: string;
+  thumbnailUrl?: string;
+}
+
+export const updateVideo = async (values: UpdateVideoProps) => {
+  try {
+    const token = getCookie("token", { cookies });
+
+    if (!token) {
+      throw new Error("Token not found");
+    }
+
+    const { videoId, ...restValues } = values;
+
+    const result = await axios.put(
+      BASE_API_URL + `/api/v1/stream/videos/${videoId}`,
+      restValues,
+      headerConfigServerSideFn(token)
+    );
+    return result.data;
+  } catch (error) {
+    if (isAxiosError(error)) {
+      console.error(
+        "error video",
+        error?.response?.status,
+        error.response?.data
+      );
+    } else if (error instanceof Error) {
+      console.error("error video", error.message);
+    }
+    // throw error;
+    throw new Error("Internal Error");
+  }
+};

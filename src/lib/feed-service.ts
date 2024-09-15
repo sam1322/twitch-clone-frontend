@@ -7,11 +7,7 @@ import { cookies } from "next/headers";
 export const getStreams = async () => {
   // return [];
   try {
-    // const token = getCookie("token", { cookies });
-
-    // if (!token) {
-    //   throw new Error("Token not found");
-    // }
+ 
     const result = await axios.get(
       BASE_API_URL + `/api/v1/stream/videos/all`
       // headerConfigServerSideFn(token)

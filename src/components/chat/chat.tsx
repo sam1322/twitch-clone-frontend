@@ -20,6 +20,7 @@ interface ChatProps {
   isChatEnabled: boolean;
   isChatDelayed: boolean;
   isChatFollowersOnly: boolean;
+  videoPage: boolean;
 }
 
 export const Chat: FC<ChatProps> = ({
@@ -31,6 +32,7 @@ export const Chat: FC<ChatProps> = ({
   isChatEnabled,
   isChatDelayed,
   isChatFollowersOnly,
+  videoPage,
 }) => {
   console.log("video", video);
   const matches = useMediaQuery("(max-width: 1024px)");
@@ -46,6 +48,9 @@ export const Chat: FC<ChatProps> = ({
   };
 
   useEffect(() => {
+    if (videoPage) {
+      return;
+    }
     const socket = new SockJS(BASE_API_URL + "/chat");
     const stompClient = Stomp.over(socket);
 
@@ -66,7 +71,7 @@ export const Chat: FC<ChatProps> = ({
     return () => {
       stompClient.disconnect();
     };
-  }, []);
+  }, [videoPage]);
 
   useEffect(() => {
     getChatHistory();
@@ -101,15 +106,7 @@ export const Chat: FC<ChatProps> = ({
         message: value,
         videoId: video.videoId,
       };
-      // stompClient.send(
-      //   "/app/chatMessage",
-      //   // "/app/chat.sendMessage",
-      //   {},
-      //   JSON.stringify(chatMessage)
-      // );
-
       stompClient.publish({
-        // destination: "/app/chatMessage",
         destination: `/app/chatMessage/${video.videoId}`,
         body: JSON.stringify(chatMessage),
         headers: connectHeaders,
@@ -133,7 +130,7 @@ export const Chat: FC<ChatProps> = ({
     }
   }, [matches, onExpand]);
 
-  const isHidden = !isChatEnabled;
+  const isHidden = !isChatEnabled && videoPage === false;
 
   return (
     <div className="flex flex-col bg-background border-l border-b pt-0 h-[calc(100vh-80px)]">
@@ -146,6 +143,7 @@ export const Chat: FC<ChatProps> = ({
             value={value}
             onChange={onChange}
             isHidden={isHidden}
+            videoPage={videoPage}
             isFollowersOnly={isChatFollowersOnly}
             isDelayed={isChatDelayed}
             isFollowing={isFollowing}

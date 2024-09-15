@@ -15,32 +15,32 @@ const page: FC<pageProps> = ({}) => {
   const [loading, setLoading] = useState(false);
   const [streamKey, setStreamKey] = useState("");
 
-  useEffect(() => {
-    fetchStreamKey();
-  }, []);
+  // useEffect(() => {
+  //   fetchStreamKey();
+  // }, []);
 
-  const fetchStreamKey = async () => {
-    try {
-      // console.log(headerConfig, "header");
-      const result = await axios.get(
-        BASE_API_URL + "/api/v1/streamKey",
-        headerConfig
-      );
-      const data = result.data;
-      setStreamKey(data.streamKey);
-    } catch (error) {
-      if (isAxiosError(error)) {
-        const errorStatus = error.response?.status;
-        let errorMessage = error.response?.data?.message;
-        // show error message
-        // if (errorStatus === 400) {
-        //   toast.error(errorMessage);
-        // } else {
-        //   toast.error("Something went wrong");
-        // }
-      }
-    }
-  };
+  // const fetchStreamKey = async () => {
+  //   try {
+  //     // console.log(headerConfig, "header");
+  //     const result = await axios.get(
+  //       BASE_API_URL + "/api/v1/streamKey",
+  //       headerConfig
+  //     );
+  //     const data = result.data;
+  //     setStreamKey(data.streamKey);
+  //   } catch (error) {
+  //     if (isAxiosError(error)) {
+  //       const errorStatus = error.response?.status;
+  //       let errorMessage = error.response?.data?.message;
+  //       // show error message
+  //       // if (errorStatus === 400) {
+  //       //   toast.error(errorMessage);
+  //       // } else {
+  //       //   toast.error("Something went wrong");
+  //       // }
+  //     }
+  //   }
+  // };
 
   const generateStreamKey = async () => {
     try {

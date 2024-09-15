@@ -14,8 +14,8 @@ export const getRecommended = async () => {
     //   userId = null;
     // }
 
-    const token = getCookie("token", { cookies });
-    const headers = token ? headerConfigServerSideFn(token) : {};
+    const token = getCookie("token", { cookies }) as string;
+    const headers = headerConfigServerSideFn(token);
 
     await new Promise((resolve) => setTimeout(resolve, 400));
     const result = await axios.get(

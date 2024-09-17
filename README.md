@@ -1,3 +1,5 @@
+# This project is hosted on [Vercel](https://twitch-clone-frontend-private.vercel.app)
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ### The backend is made with Spring boot [Twith Clone Spring boot](https://github.com/sam1322/twitch-clone-spring)
